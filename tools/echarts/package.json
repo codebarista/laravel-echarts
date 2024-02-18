@@ -1,0 +1,13 @@
+{
+    "name": "laravel-echarts",
+    "type": "module",
+    "version": "1.0.0",
+    "description": "Create images from echarts",
+    "main": "render.js",
+    "license": "MIT",
+    "dependencies": {
+        "canvas": "^2.11.2",
+        "echarts": "^5.4.3",
+        "yargs": "^17.7.2"
+    }
+}
