@@ -15,6 +15,8 @@ class StoreChartImage
 {
     use Makeable;
 
+    private string $baseOptionPath;
+
     private MimeTypes $mimeType;
 
     private string $fileName;
@@ -28,6 +30,13 @@ class StoreChartImage
     private int $width;
 
     private int $height;
+
+    public function baseOptionPath(string $value): static
+    {
+        $this->baseOptionPath = $value;
+
+        return $this;
+    }
 
     public function mimeType(MimeTypes $value): static
     {
@@ -73,6 +82,7 @@ class StoreChartImage
 
     public function __construct()
     {
+        $this->baseOptionPath(codebarista_path('resources/echarts/base-option.js'));
         $this->filePath(config('echarts.storage.path', 'app/public/vendor/echarts'));
         $this->mimeType(config('echarts.canvas.mime_type', MimeTypes::PNG));
         $this->optimize(config('echarts.optimize.png', false));
@@ -84,10 +94,10 @@ class StoreChartImage
     /**
      * @throws StoreChartImageException|Throwable
      */
-    public function handle(array $options): string
+    public function handle(array $option): string
     {
         $process = Process::path(codebarista_path('tools/echarts'))
-            ->run($this->getCommand($options));
+            ->run($this->getCommand($option));
 
         throw_if($process->failed(),
             new StoreChartImageException($process->errorOutput()));
@@ -99,7 +109,7 @@ class StoreChartImage
         return $this->fullPath;
     }
 
-    private function getCommand(array $options): array
+    private function getCommand(array $option): array
     {
         $filePath = storage_path($this->filePath);
 
@@ -116,7 +126,8 @@ class StoreChartImage
 
         return [
             'node', 'render.js',
-            '--options', Arr::toJson($options),
+            '--baseOptionPath', $this->baseOptionPath,
+            '--option', Arr::toJson($option),
             '--type', $this->mimeType->value,
             '--path', $this->fullPath,
             '--height', $this->height,
