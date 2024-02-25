@@ -21,6 +21,18 @@ composer require codebarista/laravel-echarts
 php artisan codebarista:node-echarts install
 ```
 
+For updates it would be a good idea to add the command to the root composer.json.
+```json
+{
+    "scripts": {
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan codebarista:node-echarts install"
+        ]
+    },
+}
+```
+
 ### Publish config (optional)
 
 ```shell
