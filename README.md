@@ -82,7 +82,7 @@ Overwrite the default attributes from config file:
 
 ```php
 $action = StoreChartImage::make()
-    ->baseOptionPath(resource_path('echarts/base-option.js')) // base chart to be merged
+    ->baseOptionPath(resource_path('echarts/base-option.mjs')) // base chart to be merged
     ->mimeType(MimeTypes::PNG) // PNG, JPG, PDF, SVG
     ->optimize(true) // optimize with pngcrush
     ->filePath('app/public') // storage path

@@ -82,7 +82,7 @@ class StoreChartImage
 
     public function __construct()
     {
-        $this->baseOptionPath(codebarista_path('resources/echarts/base-option.js'));
+        $this->baseOptionPath(codebarista_path('resources/echarts/base-option.mjs'));
         $this->filePath(config('echarts.storage.path', 'app/public/vendor/echarts'));
         $this->mimeType(config('echarts.canvas.mime_type', MimeTypes::PNG));
         $this->optimize(config('echarts.optimize.png', false));
