@@ -3,28 +3,23 @@
 namespace Codebarista\LaravelEcharts\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Support\Facades\Process;
 use Throwable;
 
-class NodeEcharts extends Command
+class NodeEcharts extends Command implements Isolatable
 {
-    /**
-     * The name and signature of the console command.
-     *
+    /***
      * @var string
      */
     protected $signature = 'codebarista:node-echarts {action}';
 
-    /**
-     * The console command description.
-     *
+    /***
      * @var string
      */
     protected $description = 'Install or update Node canvas and echarts';
 
-    /**
-     * Execute the console command.
-     *
+    /***
      * @throws Throwable
      */
     public function handle(): int
@@ -32,9 +27,12 @@ class NodeEcharts extends Command
         $action = $this->argument('action');
 
         $process = Process::path(codebarista_path('tools/echarts'))
+            ->timeout(180)
             ->run(['npm', $action]);
 
         throw_if($process->failed(), $process->errorOutput());
+
+        $this->components->info('Node echarts have been installed successfully.');
 
         return self::SUCCESS;
     }
